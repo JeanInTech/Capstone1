@@ -35,7 +35,13 @@ namespace PigLatin
 
                     foreach (string word in words)
                     {
-                        if (UpperCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
+                        if (string.IsNullOrWhiteSpace(word))
+                        {
+                            //so spaces between words don't display or break the program
+                        }
+                        else if
+
+                            (IsUpperCase(word) && word.Any(char.IsLetter) && HasNoSymbols(word))
                         {
                             word.ToLower();
                             char[] lineInput = word.ToCharArray();
@@ -48,7 +54,7 @@ namespace PigLatin
                                 Console.Write(PigTranslate(word).ToUpper() + " ");
                             }
                         }
-                        else if (TitleCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
+                        else if (IsTitleCase(word) && word.Any(char.IsLetter) && HasNoSymbols(word))
                         {
                             word.ToLower();
                             char[] lineInput = word.ToCharArray();
@@ -65,7 +71,7 @@ namespace PigLatin
 
                         //default is lowercase, if word fails uppercase/titlecase conditions
 
-                        else if (word.Any(char.IsLetter) && NoSymbols(word))
+                        else if (word.Any(char.IsLetter) && HasNoSymbols(word))
                         {
                             word.ToLower();
                             char[] lineInput = word.ToCharArray();
@@ -121,7 +127,7 @@ namespace PigLatin
             }
 
         }
-        public static int VowelAfterConsonantIndex(string line)
+        public static int CheckForConsonantIndex(string line)
         {
             char[] letters = line.ToCharArray();
             int i = -1;
@@ -132,22 +138,18 @@ namespace PigLatin
                 {
                     return i;
                 }
-                else
-                {
-                    continue;
-                }
             }
             return 0;
         }
         public static string PigTranslate(string userInput)
         {
             userInput.ToLower();
-            int i = VowelAfterConsonantIndex(userInput);
+            int i = CheckForConsonantIndex(userInput);
             string pigTranslate = userInput.Substring(i) + userInput.Substring(0, i) + "ay";
 
             return pigTranslate;
         }
-        public static bool NoSymbols(string word)
+        public static bool HasNoSymbols(string word)
         {
             char at = '@';
             char percentage = '%';
@@ -167,7 +169,7 @@ namespace PigLatin
                 return true;
             }
         }
-        public static bool UpperCase(string word)
+        public static bool IsUpperCase(string word)
         {
             for (int i = 0; i < word.Length; i++)
             {
@@ -176,7 +178,7 @@ namespace PigLatin
             }
             return true;
         }
-        public static bool TitleCase(string word)
+        public static bool IsTitleCase(string word)
         {
             if (Char.IsUpper(word[0]))
             {
@@ -186,6 +188,7 @@ namespace PigLatin
                         return false;
                 }
                 return true;
+
             }
             else
                 return false;
