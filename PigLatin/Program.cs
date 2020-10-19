@@ -37,6 +37,7 @@ namespace PigLatin
                     {
                         if (UpperCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
                         {
+                            word.ToLower();
                             char[] lineInput = word.ToCharArray();
                             if (IsAVowel(lineInput[0])) 
                             {
@@ -49,6 +50,7 @@ namespace PigLatin
                         }
                         else if (TitleCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
                         {
+                            word.ToLower();
                             char[] lineInput = word.ToCharArray();
                             if (IsAVowel(lineInput[0]))
                             {
@@ -65,6 +67,7 @@ namespace PigLatin
 
                         else if (word.Any(char.IsLetter) && NoSymbols(word))
                         {
+                            word.ToLower();
                             char[] lineInput = word.ToCharArray();
                             if (IsAVowel(lineInput[0]))
                             {
@@ -138,6 +141,7 @@ namespace PigLatin
         }
         public static string PigTranslate(string userInput)
         {
+            userInput.ToLower();
             int i = VowelAfterConsonantIndex(userInput);
             string pigTranslate = userInput.Substring(i) + userInput.Substring(0, i) + "ay";
 
