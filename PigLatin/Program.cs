@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 namespace PigLatin
 {
@@ -17,7 +18,7 @@ namespace PigLatin
 
             while (userContinue)
             {
-                Console.WriteLine("\nEnter a line to be translated: ");
+                Console.WriteLine("\nEnter a line to be translated: \n");
 
                 string userInput = Console.ReadLine().Trim();
 
@@ -28,26 +29,50 @@ namespace PigLatin
                 }
                 else
                 {
-                    string[] words = userInput.ToLower().Split(' ');
+                    string[] words = userInput.Split(' ');
 
                     Console.WriteLine(); //spacing between user input and output
 
                     foreach (string word in words)
                     {
-                        if (word.Any(char.IsLetter) && NoSymbols(word))
+                        if (UpperCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
+                        {
+                            char[] lineInput = word.ToCharArray();
+                            if (IsAVowel(lineInput[0])) 
+                            {
+                                Console.WriteLine(word.ToUpper() + "WAY" + " "); 
+                            }
+                            else
+                            {
+                                Console.Write(PigTranslate(word).ToUpper() + " ");
+                            }
+                        }
+                        else if (TitleCase(word) && word.Any(char.IsLetter) && NoSymbols(word))
                         {
                             char[] lineInput = word.ToCharArray();
                             if (IsAVowel(lineInput[0]))
                             {
-                                Console.Write(word + "way" + " ");
-                            }
-                            else if (word.Any(char.IsDigit))
-                            {
-                                Console.WriteLine(word + "");
+                                Console.Write(word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower() + "way" + " ");
                             }
                             else
                             {
-                                Console.Write(PigTranslate(word) + " ");
+                                string translated = PigTranslate(word);
+                                Console.Write(translated.Substring(0, 1).ToUpper() + translated.Substring(1).ToLower() + " ");
+                            }
+                        }
+
+                        //default is lowercase, if word fails uppercase/titlecase conditions
+
+                        else if (word.Any(char.IsLetter) && NoSymbols(word))
+                        {
+                            char[] lineInput = word.ToCharArray();
+                            if (IsAVowel(lineInput[0]))
+                            {
+                                Console.Write(word.ToLower() + "way" + " ");
+                            }
+                            else
+                            {
+                                Console.Write(PigTranslate(word).ToLower() + " ");
                             }
                         }
                         else
@@ -58,11 +83,12 @@ namespace PigLatin
 
                     while (userContinue)
                     {
-                        Console.WriteLine("\n\nTranslate another line? (y/n)");
-                        string proceed = Console.ReadLine().Trim();
+                        Console.WriteLine("\n\nTranslate another line? (y/n)\n");
+                        string proceed = Console.ReadLine().Trim().ToLower();
 
                         if (proceed == "n")
                         {
+                            Console.WriteLine("\nOkay, bye!");
                             userContinue = false;
                         }
                         else if (proceed == "y")
@@ -137,18 +163,28 @@ namespace PigLatin
                 return true;
             }
         }
-        public static string wordCase(string original, string translated)
+        public static bool UpperCase(string word)
         {
-            /*
-            char[] originalArray = original.ToCharArray();
-            int i = 0;
-            foreach(char letter in originalArray)
+            for (int i = 0; i < word.Length; i++)
             {
-                
+                if (!Char.IsUpper(word[i]))
+                    return false;
             }
-
-            string filler = "idk";
-            return filler;*/
+            return true;
+        }
+        public static bool TitleCase(string word)
+        {
+            if (Char.IsUpper(word[0]))
+            {
+                for (int i = 1; i < word.Length; i++)
+                {
+                    if (!Char.IsLower(word[i]))
+                        return false;
+                }
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
