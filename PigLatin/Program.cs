@@ -39,9 +39,9 @@ namespace PigLatin
                         {
                             word.ToLower();
                             char[] lineInput = word.ToCharArray();
-                            if (IsAVowel(lineInput[0])) 
+                            if (IsAVowel(lineInput[0]))
                             {
-                                Console.WriteLine(word.ToUpper() + "WAY" + " "); 
+                                Console.Write(word + "WAY ");
                             }
                             else
                             {
